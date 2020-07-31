@@ -1,5 +1,5 @@
 <?php
-    header("Access-Control-Allow-Origin: http://plus15.postech.ac.kr:5757/");
+    header("Access-Control-Allow-Origin: *");
 ?>
 
 <div id="scheme">Scheme-></div>
