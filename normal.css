@@ -1,0 +1,39 @@
+div{
+    width:260px;
+    height:auto;
+    background-color:white;
+    float:left;
+    margin:5px;
+    padding:5px;
+    border:1px solid black;
+}
+
+div#ok{
+    width:300px;
+    height:auto;
+    background-color:rgb(230, 241, 255);
+    float:left;
+    margin:5px;
+    padding:5px;
+    border:1px solid black;
+}
+
+div#not_ok{
+    width:300px;
+    height:auto;
+    background-color:rgb(255, 231, 231);
+    float:left;
+    margin:5px;
+    padding:5px;
+    border:1px solid black;
+}
+
+iframe{
+    width:260px;
+    height:150px;
+}
+
+img{
+    width:260px;
+    height:auto;
+}

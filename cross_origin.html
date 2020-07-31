@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="normal.css">
+        <title>cross origin</title>
+    </head>
+    <body>
+        <div id="ok">
+            Cross Origin으로도 가능한 것<br>
+            <div id="form_action">
+                form action<br>
+                <form action="http://plus15.postech.ac.kr:5555/whysw-exclusive/parseURI.html">
+                    이름 입력: <input type="text" name="name"><br>
+                    <input type="submit"><br>
+                </form>
+            </div>
+            <div id="image">
+                이미지 가져오기<br>
+                <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png">
+            </div>
+            <div id="iframe_no_X">
+                iframe 띄우기<br>
+                <iframe src="http://postech.ac.kr"></iframe>
+            </div>
+            <div id="iframe_X">
+                //단, X-Frame-Options가 설정되어 있으면 불가능<br>
+                <iframe src="https://google.com"></iframe>
+            </div>
+            
+        </div>
+        <div id="not_ok">
+            Cross Origin에는 불가능한 것<br>
+            <div id="xhr">
+                XMLHttpRequest<br>
+                <input type="text" id="xhrdata">
+                <input type="button" onclick="call_xhr()" value="제출">
+                <ul id="xhrres"></ul>
+                <script>
+                    function call_xhr(){
+                        var data = document.getElementById("xhrdata").value;
+                        var xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === xhr.DONE) {
+                                if (xhr.status === 200 || xhr.status === 201) {
+                                    document.getElementById("xhrres").innerText+=xhr.responseText;
+                                } else {
+                                    console.error(xhr.responseText);
+                                }
+                            }
+                        };
+                        xhr.open('GET', 'http://plus15.postech.ac.kr:5555/whysw-exclusive/sop_cors_tester/parseURI.php?data='+data);
+                        xhr.setRequestHeader('Content-Type', 'text/plain');
+                        xhr.send(); 
+                    }
+                </script>
+            </div>
+        </div>
+        <div id="ok">
+            Cross Origin에는 원래 불가능하지만 CORS로 인해 가능해진 것<br>
+            <div id="xhrcors">
+                XMLHttpRequest<br>
+                <input type="text" id="xhrdatacors">
+                <input type="button" onclick="call_xhr_cors()" value="제출">
+                <ul id="xhrrescors"></ul>
+                <script>
+                    function call_xhr_cors(){
+                        var data = document.getElementById("xhrdatacors").value;
+                        var xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === xhr.DONE) {
+                                if (xhr.status === 200 || xhr.status === 201) {
+                                    document.getElementById("xhrrescors").innerText+=xhr.responseText;
+                                } else {
+                                    console.error(xhr.responseText);
+                                }
+                            }
+                        };
+                        xhr.open('GET', 'http://plus15.postech.ac.kr:5555/whysw-exclusive/sop_cors_tester/parseURIwithCORS.php?data='+data);
+                        xhr.setRequestHeader('Content-Type', 'text/plain');
+                        xhr.send(); 
+                    }
+                </script>
+            </div>
+        </div>
+    </body>
+</html>
