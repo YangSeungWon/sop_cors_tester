@@ -8,8 +8,8 @@
         <div id="ok">
             Cross Origin으로도 가능한 것<br>
             <div id="form_action">
-                form action<br>
-                <form action="http://plus15.postech.ac.kr:5555/whysw-exclusive/parseURI.html">
+                Form action<br>
+                <form action="http://plus15.postech.ac.kr:5555/whysw-exclusive/sop_cors_tester/parseURI.php">
                     이름 입력: <input type="text" name="name"><br>
                     <input type="submit"><br>
                 </form>
@@ -33,7 +33,7 @@
             <div id="xhr">
                 XMLHttpRequest<br>
                 <input type="text" id="xhrdata">
-                <input type="button" onclick="call_xhr()" value="제출">
+                <input type="button" onclick="call_xhr()" value="제출"><br>
                 <ul id="xhrres"></ul>
                 <script>
                     function call_xhr(){
@@ -42,9 +42,9 @@
                         xhr.onreadystatechange = function() {
                             if (xhr.readyState === xhr.DONE) {
                                 if (xhr.status === 200 || xhr.status === 201) {
-                                    document.getElementById("xhrres").innerText+=xhr.responseText;
+                                    document.getElementById("xhrres").innerText=xhr.responseText;
                                 } else {
-                                    console.error(xhr.responseText);
+                                    document.getElementById("xhrres").innerText="Error: see console";
                                 }
                             }
                         };
@@ -54,6 +54,29 @@
                     }
                 </script>
             </div>
+            <div id="iframe_same_access">
+                iframe 내부의 same origin에 접근은 가능
+                <input type="button" onclick="access('iframe_same','iframesameres')" value="접근"><br>
+                iframe 안의 내용: <ul id="iframesameres"></ul>
+                <iframe id="iframe_same" src="http://plus15.postech.ac.kr:5757/whysw-exclusive/sop_cors_tester/parseURI.php"></iframe>
+            </div>
+            <div id="iframe_cross_access">
+                iframe 내부의 cross origin에 접근 불가
+                <input type="button" onclick="access('iframe_cross','iframecrossres')" value="접근"><br>
+                iframe 안의 내용: <ul id="iframecrossres"></ul>
+                <iframe id="iframe_cross" src="http://plus15.postech.ac.kr:5555/whysw-exclusive/sop_cors_tester/parseURI.php"></iframe>
+            </div>
+            <script>
+                function access(iframe_id, res){
+                    try {
+                        tmp = document.getElementById(iframe_id).contentDocument.getElementById('port').innerText
+                    } catch (e) {
+                        tmp = "Error: " + e
+                        console.log(e)
+                    }
+                    document.getElementById(res).innerText = tmp
+                }
+            </script>
         </div>
         <div id="ok">
             Cross Origin에는 원래 불가능하지만 CORS로 인해 가능해진 것<br>
@@ -69,9 +92,9 @@
                         xhr.onreadystatechange = function() {
                             if (xhr.readyState === xhr.DONE) {
                                 if (xhr.status === 200 || xhr.status === 201) {
-                                    document.getElementById("xhrrescors").innerText+=xhr.responseText;
+                                    document.getElementById("xhrrescors").innerText=xhr.responseText;
                                 } else {
-                                    console.error(xhr.responseText);
+                                    document.getElementById("xhrrescors").innerText="Error: see console";
                                 }
                             }
                         };
