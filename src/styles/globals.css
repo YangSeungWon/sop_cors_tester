@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --mui-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  --mui-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+body {
+  @apply bg-gray-50;
+}
+
+@layer components {
+  .mui-card {
+    @apply bg-white rounded-lg shadow-mui p-6 transition-shadow hover:shadow-lg;
+  }
+
+  .mui-button {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-200 shadow-mui-sm
+           hover:shadow-mui active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .mui-button-primary {
+    @apply mui-button bg-primary text-white hover:bg-primary-dark;
+  }
+
+  .mui-button-secondary {
+    @apply mui-button bg-white text-gray-800 hover:bg-gray-50;
+  }
+
+  .mui-input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md
+           focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+           transition-all duration-200;
+  }
+
+  .mui-paper {
+    @apply bg-white shadow-mui rounded-lg;
+  }
+}
