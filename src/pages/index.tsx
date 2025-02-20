@@ -5,6 +5,7 @@ import TestTypeSelector from '@/components/TestTypeSelector';
 import TestCaseList from '@/components/TestCaseList';
 import CustomUrlTester from '@/components/CustomUrlTester';
 import Layout from '@/components/Layout';
+import InfoPanel from '@/components/InfoPanel';
 
 export default function CORSTester() {
   const [currentOrigin, setCurrentOrigin] = useState('');
@@ -32,6 +33,8 @@ export default function CORSTester() {
   return (
     <Layout>
       <div className="space-y-8">
+        <InfoPanel />
+        
         <TestTypeSelector
           types={TEST_TYPES}
           selected={selectedTestType}

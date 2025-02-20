@@ -18,7 +18,7 @@ export default function CustomUrlTester({ testType, currentOrigin }: Props) {
 
   const runTest = async () => {
     if (!url) return;
-    
+
     let testResult;
     switch (testType) {
       case 'xhr':
@@ -31,14 +31,53 @@ export default function CustomUrlTester({ testType, currentOrigin }: Props) {
         testResult = await testIframe(url);
         break;
     }
-    
+
     setResult(testResult);
+  };
+
+  const renderContent = (result: TestResult, type: TestType['id']) => {
+    if (!result.content) return null;
+
+    switch (type) {
+      case 'xhr':
+        return (
+          <div className="mt-4 p-4 bg-gray-50 rounded-md border border-gray-100">
+            <h4 className="text-sm font-medium text-gray-700 mb-2">Response Data:</h4>
+            <pre className="text-xs overflow-auto whitespace-pre-wrap text-gray-600">
+              {typeof result.content === 'string'
+                ? result.content.slice(0, 500) + (result.content.length > 500 ? '...' : '')
+                : JSON.stringify(result.content, null, 2)}
+            </pre>
+          </div>
+        );
+      case 'image':
+        return (
+          <div className="mt-4 p-2 bg-gray-50 rounded-md border border-gray-100">
+            <img
+              src={result.content}
+              alt="Test result"
+              className="max-h-32 rounded mx-auto"
+            />
+          </div>
+        );
+      case 'iframe':
+        return (
+          <div className="mt-4 border rounded-md overflow-hidden">
+            <iframe
+              src={result.content}
+              className="w-full h-32"
+            />
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
     <div className="mui-paper p-6">
       <h2 className="text-xl font-medium text-gray-800 mb-6">Custom URL Test</h2>
-      
+
       <div className="space-y-4">
         <div>
           <input
@@ -60,9 +99,8 @@ export default function CustomUrlTester({ testType, currentOrigin }: Props) {
 
         {result && (
           <div className="mt-4">
-            <div className={`font-medium ${
-              result.success ? 'text-success' : 'text-error'
-            }`}>
+            <div className={`font-medium ${result.success ? 'text-success' : 'text-error'
+              }`}>
               {result.message}
             </div>
             {result.details && (
@@ -70,23 +108,7 @@ export default function CustomUrlTester({ testType, currentOrigin }: Props) {
                 {result.details}
               </pre>
             )}
-            {result.content && testType === 'image' && (
-              <div className="mt-4 p-2 bg-gray-50 rounded-md border border-gray-100">
-                <img 
-                  src={result.content} 
-                  alt="Test result"
-                  className="max-h-32 rounded mx-auto"
-                />
-              </div>
-            )}
-            {result.content && testType === 'iframe' && (
-              <div className="mt-4 border rounded-md overflow-hidden">
-                <iframe
-                  src={result.content}
-                  className="w-full h-32"
-                />
-              </div>
-            )}
+            {renderContent(result, testType)}
           </div>
         )}
       </div>

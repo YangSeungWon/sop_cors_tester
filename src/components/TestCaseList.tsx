@@ -27,6 +27,45 @@ export default function TestCaseList({ cases, selectedType, onRunTest }: Props) 
     onRunTest(testCase.id, result);
   };
 
+  const renderContent = (result: TestResult, type: TestType['id']) => {
+    if (!result.content) return null;
+
+    switch (type) {
+      case 'xhr':
+        return (
+          <div className="mt-4 p-4 bg-gray-50 rounded-md border border-gray-100">
+            <h4 className="text-sm font-medium text-gray-700 mb-2">Response Data:</h4>
+            <pre className="text-xs overflow-auto whitespace-pre-wrap text-gray-600">
+              {typeof result.content === 'string' 
+                ? result.content.slice(0, 500) + (result.content.length > 500 ? '...' : '')
+                : JSON.stringify(result.content, null, 2)}
+            </pre>
+          </div>
+        );
+      case 'image':
+        return (
+          <div className="mt-4 p-2 bg-gray-50 rounded-md border border-gray-100">
+            <img 
+              src={result.content} 
+              alt="Test result"
+              className="max-h-32 rounded mx-auto"
+            />
+          </div>
+        );
+      case 'iframe':
+        return (
+          <div className="mt-4 border rounded-md overflow-hidden">
+            <iframe
+              src={result.content}
+              className="w-full h-32"
+            />
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="grid gap-6 md:grid-cols-2">
       {cases.map(testCase => (
@@ -71,23 +110,7 @@ export default function TestCaseList({ cases, selectedType, onRunTest }: Props) 
                   {testCase.result.details}
                 </pre>
               )}
-              {testCase.result.content && selectedType === 'image' && (
-                <div className="mt-4 p-2 bg-gray-50 rounded-md border border-gray-100">
-                  <img 
-                    src={testCase.result.content} 
-                    alt="Test result"
-                    className="max-h-32 rounded mx-auto"
-                  />
-                </div>
-              )}
-              {testCase.result.content && selectedType === 'iframe' && (
-                <div className="mt-4 border rounded-md overflow-hidden">
-                  <iframe
-                    src={testCase.result.content}
-                    className="w-full h-32"
-                  />
-                </div>
-              )}
+              {renderContent(testCase.result, selectedType)}
             </div>
           )}
         </div>
